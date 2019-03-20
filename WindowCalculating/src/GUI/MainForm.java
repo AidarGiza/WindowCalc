@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -41,8 +42,6 @@ public class MainForm extends JFrame{
 	JComboBox<String> sillWidthCB = new JComboBox<String>(sillWidths);
 
 	float typeRate = 0.37f;
-	float sillCoast = 0.0015f;
-	float outflowCoast = 0.0005f;
 	int outflowWidth = 0;
 	boolean error = false;
 	
@@ -185,11 +184,30 @@ public class MainForm extends JFrame{
 			public void changedUpdate(DocumentEvent arg0) { }
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
+				try {
+					windowHeghtTF.setBackground(Color.white);
+					if (Integer.parseInt(windowHeghtTF.getText()) < 500) {
+						windowHeghtTF.setBackground(Color.red);
+					}
+				} catch (NumberFormatException e) {
+					// Если поле пустое, высота равна 0
+					windowHeghtTF.setBackground(Color.red);
+				}
 				// Посчитать сумму
 				UpdateSumm();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
+				try {
+					// Если высота меньше 500 вывести ошибку
+					windowHeghtTF.setBackground(Color.white);
+					if (Integer.parseInt(windowHeghtTF.getText()) < 500) {
+						windowHeghtTF.setBackground(Color.red);
+					}
+				} catch (NumberFormatException e) {
+					// Если поле пустое, высота равна 0
+					windowHeghtTF.setBackground(Color.red);
+				}
 				// Посчитать сумму
 				UpdateSumm();
 			}
@@ -243,78 +261,68 @@ public class MainForm extends JFrame{
 	
 	// Функция для счета суммы
 	void UpdateSumm() {
+		String summ;
+		
+		summ = Calculate(windowHeghtTF.getText(), sectPropsPanel.getSections(), typeRate, Integer.parseInt(sillWidthCB.getSelectedItem().toString()), outflowWidth, installChB.isSelected());
+		
+		// Вывести сумму в поле вывода суммы
+		priceTF.setText(summ);
+		
+	}
+	
+	public String Calculate(String winHeightStr, ArrayList<SectionPropertyPanel> sections, float typeRate, int sillWidth, int outflowWidth, boolean install) {
 		// Переменные
 		int winHeight = 0;
 		int totalWinWidth = 0;
-		int sillWidth = 0;
 		int winCost = 0;
 		int summ = 0;
 		error = false;
 		// Проверка поля для ввода высоты окна
 		try {
-			windowHeghtTF.setBackground(Color.white);
-			winHeight = Integer.parseInt(windowHeghtTF.getText());
+			winHeight = Integer.parseInt(winHeightStr);
 			// Если высота меньше 500 вывести ошибку
 			if (winHeight < 500) {
-				windowHeghtTF.setBackground(Color.red);
-				setError("Высота окна не может быть меньше 500мм");
-				return;
+				return "Высота окна не может быть меньше 500мм";
 			}
 		} catch (NumberFormatException e) {
 			// Если поле пустое, высота равна 0
-			if (windowHeghtTF.getText().isEmpty()) {
+			if (winHeightStr.isEmpty()) {
 				winHeight = 0;
 			}
-			windowHeghtTF.setBackground(Color.red);
-			setError();
-			return;
+			return "Неверный формат поля 'высота окна'";
 		}
 		// Для каждой секции окна..
-		for (SectionPropertyPanel item : sectPropsPanel.getSections()) {
-			// Если высота меньше 500 вывести ошибку
-			if (item.getSectionWidth() < 500) {
-				setError("Ширина окна не может быть меньше 500мм");
-				return;
-			}
-			// Вывести ошибку, если введено некорректное значение
-			if (item.sectWidthTF.getBackground() == Color.red) {
-				setError();
-				return;
+		for (SectionPropertyPanel item : sections) {
+			int sectionWidth = 0;
+			try {
+				sectionWidth = Integer.parseInt(item.getSectionWidth());
+				// Если высота меньше 500 вывести ошибку
+				if (sectionWidth < 500) {
+					return "Ширина окна не может быть меньше 500мм";
+				}
+			} catch (NumberFormatException e) {
+				// Если поле пустое, высота равна 0
+				if (item.getSectionWidth().isEmpty()) {
+					sectionWidth = 0;
+				}
+				return "Неверный формат поля 'Ширина'";
 			}
 			// Посчитать стоимость секции
-			winCost = (winHeight * 2) + (item.getSectionWidth() * 2);
-			totalWinWidth += item.getSectionWidth();
+			winCost = (winHeight * 2) + (sectionWidth * 2);
+			totalWinWidth += sectionWidth;
 			summ += winCost;
 			summ += winCost * typeRate;
 			summ += winCost * item.sectTypeRate;
 		}
 		
-		try {
-			sillWidth = Integer.parseInt(sillWidthCB.getSelectedItem().toString());
-		} catch (NumberFormatException e) {
-			
-		}
 		// Посчитать сумму с учетом ширины подоконника и ширина отлива
-		summ += totalWinWidth * sillWidth * sillCoast;
-		summ += totalWinWidth * outflowWidth * outflowCoast;
+		summ += totalWinWidth * sillWidth * 0.0015f;
+		summ += totalWinWidth * outflowWidth * 0.0005f;
 		
 		// Посчитать сумму с учетом выбора "заказать ли установку окна"
-		if (installChB.isSelected()) summ += summ * 0.11f;
+		if (install) summ += summ * 0.11f;
 		
-		// Вывести сумму в поле вывода суммы
-		priceTF.setText(String.valueOf(summ));
-		
+		return String.valueOf(summ);
 	}
 	
-	// Функция для вывода ошибки
-	private void setError() {
-		error = true;
-		priceTF.setText("Ошибки в полях");
-	}
-	
-	// Функция для вывода ошибки
-	private void setError(String message) {
-		error = true;
-		priceTF.setText(message);
-	}
 }

@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -57,14 +58,34 @@ public class SectionsPropertiesPanel extends JPanel{
 					public void changedUpdate(DocumentEvent arg0) {	}
 					@Override
 					public void insertUpdate(DocumentEvent arg0) {
-						secPropPan.UpdateWidth();
 						// Вызвать событие для слушателей
+						try {
+							secPropPan.sectWidthTF.setBackground(Color.white);
+							// Если ширина меньше 500 вывести ошибку
+							if (Integer.parseInt(secPropPan.sectWidthTF.getText()) < 500) {
+								secPropPan.sectWidthTF.setBackground(Color.red);
+							}
+						} catch (NumberFormatException e) {
+							// Если поле пустое, высота равна 0
+							secPropPan.sectWidthTF.setBackground(Color.red);
+						}
+						secPropPan.setSectionWidth(secPropPan.sectWidthTF.getText());
 						firePropertyChanges();
 					}
 					@Override
 					public void removeUpdate(DocumentEvent arg0) {
-						secPropPan.UpdateWidth();
 						// Вызвать событие для слушателей
+						try {
+							secPropPan.sectWidthTF.setBackground(Color.white);
+							// Если ширина меньше 500 вывести ошибку
+							if (Integer.parseInt(secPropPan.sectWidthTF.getText()) < 500) {
+								secPropPan.sectWidthTF.setBackground(Color.red);
+							}
+						} catch (NumberFormatException e) {
+							// Если поле пустое, высота равна 0
+							secPropPan.sectWidthTF.setBackground(Color.red);
+						}
+						secPropPan.setSectionWidth(secPropPan.sectWidthTF.getText());
 						firePropertyChanges();
 					}
 				});

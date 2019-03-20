@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,11 +17,11 @@ public class SectionPropertyPanel extends JPanel{
 	private static final long serialVersionUID = -8240584799077267979L;
 
 	// Свойство "Ширина секции окна"
-	private int SectionWidth;
-	public int getSectionWidth() {
+	private String SectionWidth;
+	public String getSectionWidth() {
 		return SectionWidth;
 	}
-	public void setSectionWidth(int sectionWidth) {
+	public void setSectionWidth(String sectionWidth) {
 		SectionWidth = sectionWidth;
 	}
 
@@ -59,7 +58,7 @@ public class SectionPropertyPanel extends JPanel{
 			"Поворотно/откидная вправо"
 	};
 	JComboBox<String> sectTypeCB = new JComboBox<String>(items);
-	JTextField sectWidthTF = new JTextField();
+	public JTextField sectWidthTF = new JTextField();
 	
 	// Конструктор панели выбора параметров секции
 	public SectionPropertyPanel(String name) {
@@ -71,30 +70,11 @@ public class SectionPropertyPanel extends JPanel{
 		add(sectWidthTF, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.EAST, 
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 5, 10), 0, 0));
 		sectWidthTF.setText("500");
+		setSectionWidth("500");
 		
 		// Выпадающий список типов секции
 		add(sectTypeCB, new GridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.EAST, 
 				GridBagConstraints.HORIZONTAL, new Insets(5, 10, 10, 10), 0, 0));
 		
-		UpdateWidth();
 	}
-
-	// Проверка введенной ширины секции
-	public void UpdateWidth() {
-		try {
-			setSectionWidth(Integer.parseInt(sectWidthTF.getText()));
-			sectWidthTF.setBackground(Color.white);
-			// Если высота меньше 500 вывести ошибку
-			if (SectionWidth < 500) {
-				sectWidthTF.setBackground(Color.red);
-			}
-		} catch (NumberFormatException e) {
-			// Если поле пустое, высота равна 0
-			if (sectWidthTF.getText().isEmpty()) {
-				setSectionWidth(0);
-			}
-			sectWidthTF.setBackground(Color.red);
-		}
-	}
-	
 }
