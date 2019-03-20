@@ -18,7 +18,7 @@ class FourthTest {
 		sections.add(new SectionPropertyPanel("1"));
 		sections.add(new SectionPropertyPanel("2"));
 		sections.add(new SectionPropertyPanel("3"));
-		sections.get(0).setSectionWidth("520");
+		sections.get(0).setSectionWidth("52см");
 		sections.get(0).sectTypeRate = 0;
 		sections.get(1).setSectionWidth("520");
 		sections.get(1).sectTypeRate = 0.193f;
@@ -35,7 +35,7 @@ class FourthTest {
 		
 		summ = calc.Calculate(winHeight, sections, typeRate, sillWidth, outflowWidth, install);
 		
-		Assert.assertEquals("13447", summ);
+		Assert.assertEquals("Неверный формат поля 'Ширина'", summ);
 	}
 
 }
