@@ -50,13 +50,11 @@ public class SectionsPropertiesPanel extends JPanel{
 		} else if (sectionNumber > SectionNumber){ // Добавить секцию
 			for (int i = SectionNumber; i < sectionNumber; i++) {
 				// Добавить панель выбора параметров секции
-				SectionPropertyPanel secPropPan = new SectionPropertyPanel("Секция " + (i + 1));
+				final SectionPropertyPanel secPropPan = new SectionPropertyPanel("Секция " + (i + 1));
 				add(secPropPan, new GridBagConstraints(i + 1, 0, 1, 2, 1, 1, GridBagConstraints.WEST, 
 					GridBagConstraints.HORIZONTAL, new Insets(10, 5, 10, 5), 0, 0));
 				secPropPan.sectWidthTF.getDocument().addDocumentListener(new DocumentListener() {
-					@Override
 					public void changedUpdate(DocumentEvent arg0) {	}
-					@Override
 					public void insertUpdate(DocumentEvent arg0) {
 						// Вызвать событие для слушателей
 						try {
@@ -72,7 +70,6 @@ public class SectionsPropertiesPanel extends JPanel{
 						secPropPan.setSectionWidth(secPropPan.sectWidthTF.getText());
 						firePropertyChanges();
 					}
-					@Override
 					public void removeUpdate(DocumentEvent arg0) {
 						// Вызвать событие для слушателей
 						try {
@@ -90,7 +87,6 @@ public class SectionsPropertiesPanel extends JPanel{
 					}
 				});
 				secPropPan.sectTypeCB.addActionListener(new ActionListener() {
-					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						secPropPan.setSectionType(secPropPan.sectTypeCB.getSelectedItem().toString());
 						// Вызвать событие для слушателей

@@ -82,12 +82,11 @@ public class MainForm extends JFrame{
 		};
 		
 		// Выпадающий список для выбора типа стеклопакета
-		JComboBox<String> glassTypeCB = new JComboBox<String>(glassTypes);
+		final JComboBox<String> glassTypeCB = new JComboBox<String>(glassTypes);
 		mainPanel.add(glassTypeCB, new GridBagConstraints(1, 1, 1, 1, 0, 0, GridBagConstraints.WEST, 
 				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 10), 0, 0));
 		// Слушатель для выпадающего списка
 		glassTypeCB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				switch (glassTypeCB.getSelectedIndex()) {
 					case 0: typeRate = 0.37f;
@@ -113,7 +112,6 @@ public class MainForm extends JFrame{
 				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 10), 0, 0));
 		// Слушатель для выпадающего списка
 		sillWidthCB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Посчитать сумму
 				UpdateSumm();
@@ -128,12 +126,11 @@ public class MainForm extends JFrame{
 				"нет", "менее 100мм", "100-150мм", "200-250мм", "250-400мм"
 		};
 		// Выпадающий список для выбора ширина отлива
-		JComboBox<String> outflowWidthCB = new JComboBox<String>(outflowWidths);
+		final JComboBox<String> outflowWidthCB = new JComboBox<String>(outflowWidths);
 		mainPanel.add(outflowWidthCB, new GridBagConstraints(1, 3, 1, 1, 0, 0, GridBagConstraints.WEST, 
 				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 10), 0, 0));
 		// Слушатель для выпадающего списка
 		outflowWidthCB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				switch (outflowWidthCB.getSelectedIndex()) {
 					case 0:
@@ -162,7 +159,6 @@ public class MainForm extends JFrame{
 				GridBagConstraints.WEST, new Insets(5, 5, 5, 0), 0, 0));
 		// Слушатель для панели 
 		sectPropsPanel.addPropertyChangedListener(new PropertyChangedListener() {
-			@Override
 			public void propertyChanged() {
 				// Посчитать сумму
 				UpdateSumm();
@@ -180,9 +176,7 @@ public class MainForm extends JFrame{
 		windowHeghtTF.setText("1000");
 		// Слушатель для поля ввода
 		windowHeghtTF.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
 			public void changedUpdate(DocumentEvent arg0) { }
-			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				try {
 					windowHeghtTF.setBackground(Color.white);
@@ -196,7 +190,6 @@ public class MainForm extends JFrame{
 				// Посчитать сумму
 				UpdateSumm();
 			}
-			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				try {
 					// Если высота меньше 500 вывести ошибку
@@ -218,7 +211,6 @@ public class MainForm extends JFrame{
 				GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 5), 0, 0));
 		// Слушатель для флажка
 		installChB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Посчитать сумму
 				UpdateSumm();
@@ -249,7 +241,6 @@ public class MainForm extends JFrame{
 		// Слушатель для каждой радиокнопки
 		ActionListener listener = new ActionListener()
 		{
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// Задать количество секций
 				sectPropsPanel.setSectionNumber(num);

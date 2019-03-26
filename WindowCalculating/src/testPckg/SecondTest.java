@@ -2,16 +2,15 @@ package testPckg;
 
 import java.util.ArrayList;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 import GUI.MainForm;
 import GUI.SectionPropertyPanel;
 
-class SecondTest {
+public class SecondTest {
 
 	@Test
-	void test() {
+	public void test() {
 		String summ;
 		
 		ArrayList<SectionPropertyPanel> sections = new ArrayList<SectionPropertyPanel>();
